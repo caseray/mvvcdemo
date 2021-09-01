@@ -1,0 +1,2 @@
+rootProject.name = "MVVC Demo"
+include ':app'
