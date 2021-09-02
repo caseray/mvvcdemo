@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.snackbar.Snackbar
 import com.ugogineering.android.mvvcdemo.R
+import com.ugogineering.android.mvvcdemo.data.model.SignupBody
 import com.ugogineering.android.mvvcdemo.databinding.FragmentSignUpBinding
 
 
@@ -39,11 +40,12 @@ class SignUpFragment : Fragment() {
         
         binding.signupButton.setOnClickListener { 
             if (validateData()) {
-                authViewModel.processInput(binding.firstName.text.toString().trim(),
-                binding.lastName.text.toString().trim(), binding.email.text.toString(),
-                binding.phone.text.toString(), binding.password.text.toString())
+                authViewModel.signUp(SignupBody(binding.firstName.text.toString().trim(),
+                    binding.email.text.toString(), binding.password.text.toString(),
+                    binding.passwordAgain.text.toString().trim(), binding.lastName.text.toString().trim(),
+                    binding.phone.text.toString()))
                 // Trigger navigation to SignUpReportFragment
-                authViewModel.goToSignUpReportFragment()
+                //authViewModel.goToSignUpReportFragment()
             }
         }
 
