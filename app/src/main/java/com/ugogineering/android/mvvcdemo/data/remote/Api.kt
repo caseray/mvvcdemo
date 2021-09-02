@@ -8,9 +8,9 @@ import retrofit2.http.Headers
 import retrofit2.http.POST
 
 interface Api {
-    @Headers("Content-Type: application/json")
-    @POST("api/auth/register")
-    suspend fun signUp(
-        @Body signupBody: SignupBody
-    ): Response<SignupResponse>
+//    @Headers("Content-Type: application/json")
+//    @POST("api/auth/register")
+//    suspend fun signUp(
+//        @Body signupBody: SignupBody
+//    ): Response<SignupResponse>
 }

@@ -15,6 +15,7 @@ import com.ugogineering.android.mvvcdemo.databinding.FragmentSignUpReportBinding
  * A simple [Fragment] subclass.
  */
 class SignUpReportFragment : Fragment() {
+
     private lateinit var binding: FragmentSignUpReportBinding
     private val authViewModel: AuthViewModel by activityViewModels()
 
@@ -22,6 +23,7 @@ class SignUpReportFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         binding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_sign_up_report, container, false)
 

@@ -52,6 +52,11 @@ class AuthViewModel: ViewModel() {
     val signupMessage: LiveData<String>
         get() = _signupMessage
 
+    // User Token
+    private val _userToken = MutableLiveData<String>()
+    val userToken: LiveData<String>
+        get() = _userToken
+
 
 
     private val _eventGoToSignUpReportFragment = MutableLiveData<Boolean>()
@@ -76,12 +81,13 @@ class AuthViewModel: ViewModel() {
     // Sets the value of the signupResponse LiveData to the Login API signup response
     fun signUp(signupBody: SignupBody) {
         coroutineScope.launch {
-            var signUpDeferred = TestApi.retrofitService.signUp(signupBody)
+            val signUpDeferred = TestApi.retrofitService.signUp(signupBody)
             try {
-                var signUpResult = signUpDeferred.await()
+                val signUpResult = signUpDeferred.await()
                 _signupMessage.value = "Success: ${signUpResult.message} "
-                _signupStatus.value = signUpResult.success
                 _signupResponse.value = signUpResult
+                _userToken.value = signUpResult.data.token
+                _signupStatus.value = signUpResult.success
                 // Trigger navigation to SignUpReportFragment
                 //goToSignUpReportFragment()
                 // _eventGoToSignUpReportFragment.value = signUpResult.success
@@ -116,6 +122,9 @@ class AuthViewModel: ViewModel() {
     }
     fun goToLoginReportFragmentComplete() {
         _eventGoToLoginFragment.value = false
+    }
+    fun goToMainActivityComplete() {
+        _signupStatus.value = false
     }
 
     override fun onCleared() {

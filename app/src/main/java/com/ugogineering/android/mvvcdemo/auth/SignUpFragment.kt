@@ -1,5 +1,7 @@
 package com.ugogineering.android.mvvcdemo.auth
 
+import UserPreferences
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,17 +11,21 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.snackbar.Snackbar
+import com.ugogineering.android.mvvcdemo.MainActivity
 import com.ugogineering.android.mvvcdemo.R
 import com.ugogineering.android.mvvcdemo.data.model.SignupBody
 import com.ugogineering.android.mvvcdemo.databinding.FragmentSignUpBinding
+import kotlinx.coroutines.launch
 
 
 /**
  * A simple [Fragment] subclass.
  */
 class SignUpFragment : Fragment() {
+    private lateinit var userPreferences: UserPreferences
     private lateinit var binding: FragmentSignUpBinding
     private val authViewModel: AuthViewModel by activityViewModels()
 
@@ -27,7 +33,7 @@ class SignUpFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        userPreferences = UserPreferences(requireContext())
         binding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_sign_up, container, false)
 
@@ -49,12 +55,26 @@ class SignUpFragment : Fragment() {
             }
         }
 
-        // Observer for trigger to goToSignUpReportFragment
+        // Observer for trigger to goToSignUpReportFragment. TO BE REMOVED ALONG WITH goToSignUpFragment()
         authViewModel.eventGoToSignUpReportFragment.observe(viewLifecycleOwner, { goToSignUpReport ->
             if(goToSignUpReport) goToSignUpReportFragment()
         })
+        authViewModel.signupStatus.observe(viewLifecycleOwner, { saveUserToken ->
+            if(saveUserToken) {
+                lifecycleScope.launch {
+                    userPreferences.saveAuthToken(authViewModel.userToken.value.toString())
+                }
+            }
+            goToMainActivity()
+        })
+
+
 
         return binding.root
+    }
+    private fun goToMainActivity(){
+        startActivity(Intent(context, MainActivity::class.java))
+        authViewModel.goToMainActivityComplete()
     }
 
     private fun goToSignUpReportFragment() {
@@ -112,7 +132,6 @@ class SignUpFragment : Fragment() {
     private fun showMessage(s: String) {
         Snackbar.make(binding.rootLayout, s, Snackbar.LENGTH_LONG)
             .show()
-
     }
 
 }
