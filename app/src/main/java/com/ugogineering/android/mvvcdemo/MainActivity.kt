@@ -14,12 +14,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val userPreferences = UserPreferences(this)
+        //val userPreferences = UserPreferences(this)
 
-        userPreferences.authToken.asLiveData().observe(this, {
-            Toast.makeText(this, it ?: "Token is Null", Toast.LENGTH_SHORT).show()
-            //startActivity(Intent(this, AuthActivity::class.java))
-        })
+//        userPreferences.authToken.asLiveData().observe(this, {
+//            Toast.makeText(this, it ?: "Token is Null", Toast.LENGTH_SHORT).show()
+//            //startActivity(Intent(this, AuthActivity::class.java))
+//        })
 
 //        finish()
 //        startActivity(Intent(this, AuthActivity::class.java))

@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="authViewModel"
-            type="com.ugogineering.android.mvvcdemo.auth.AuthViewModel" />
+            name="loginViewModel"
+            type="com.ugogineering.android.mvvcdemo.auth.LoginViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,7 +34,7 @@
             android:id="@+id/loginTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{authViewModel.loginMessage}"
+            android:text="@{loginViewModel.loginMessage}"
             android:textSize="25sp"
             android:layout_margin="@dimen/views_padding"
             app:layout_constraintEnd_toEndOf="parent"
@@ -46,7 +46,7 @@
             android:id="@+id/loginStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{authViewModel.loginStatus.toString()}"
+            android:text="@{loginViewModel.loginStatus.toString()}"
             android:textSize="25sp"
             android:layout_margin="@dimen/views_padding"
             app:layout_constraintEnd_toEndOf="parent"

@@ -17,7 +17,6 @@ import com.ugogineering.android.mvvcdemo.databinding.FragmentSignUpReportBinding
 class SignUpReportFragment : Fragment() {
 
     private lateinit var binding: FragmentSignUpReportBinding
-    private val authViewModel: AuthViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,10 +26,6 @@ class SignUpReportFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_sign_up_report, container, false)
 
-        // Setting the viewmodel for databinding - this allows the bound layout access to all the data in the ViewModel
-        binding.authViewModel = authViewModel
-        // Specifying the fragment view as the lifecycle owner of the binding. This is used so that the binding can observe LiveData updates
-        binding.lifecycleOwner = viewLifecycleOwner
 
         return binding.root
     }

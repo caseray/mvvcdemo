@@ -1,44 +1,44 @@
 package com.ugogineering.android.mvvcdemo.auth
 
-import UserPreferences
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.NavHostFragment
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.ugogineering.android.mvvcdemo.MainActivity
 import com.ugogineering.android.mvvcdemo.R
 import com.ugogineering.android.mvvcdemo.data.model.SignupBody
 import com.ugogineering.android.mvvcdemo.databinding.FragmentSignUpBinding
-import kotlinx.coroutines.launch
 
 
 /**
  * A simple [Fragment] subclass.
  */
 class SignUpFragment : Fragment() {
-    private lateinit var userPreferences: UserPreferences
+    //private lateinit var userPreferences: UserPreferences
     private lateinit var binding: FragmentSignUpBinding
-    private val authViewModel: AuthViewModel by activityViewModels()
+    // Creating a reference to the SignUpViewModel
+    private lateinit var viewModel: SignUpViewModel
+    //private val authViewModel: AuthViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        userPreferences = UserPreferences(requireContext())
+
         binding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_sign_up, container, false)
+        // Initializing the viewmodel object
+        viewModel = ViewModelProvider(this).get(SignUpViewModel::class.java)
+
+        //userPreferences = UserPreferences(requireContext())
 
         // Setting the viewmodel for databinding - this allows the bound layout access to all the data in the ViewModel
-        binding.authViewModel = authViewModel
+        binding.signUpViewModel = viewModel
         // Specifying the fragment view as the lifecycle owner of the binding. This is used so that the binding can observe LiveData updates
         binding.lifecycleOwner = viewLifecycleOwner
         
@@ -46,7 +46,7 @@ class SignUpFragment : Fragment() {
         
         binding.signupButton.setOnClickListener { 
             if (validateData()) {
-                authViewModel.signUp(SignupBody(binding.firstName.text.toString().trim(),
+                viewModel.signUp(SignupBody(binding.firstName.text.toString().trim(),
                     binding.email.text.toString(), binding.password.text.toString(),
                     binding.passwordAgain.text.toString().trim(), binding.lastName.text.toString().trim(),
                     binding.phone.text.toString()))
@@ -55,18 +55,15 @@ class SignUpFragment : Fragment() {
             }
         }
 
-        // Observer for trigger to goToSignUpReportFragment. TO BE REMOVED ALONG WITH goToSignUpFragment()
-        authViewModel.eventGoToSignUpReportFragment.observe(viewLifecycleOwner, { goToSignUpReport ->
-            if(goToSignUpReport) goToSignUpReportFragment()
-        })
-        authViewModel.signupStatus.observe(viewLifecycleOwner, { saveUserToken ->
-            if(saveUserToken) {
-                lifecycleScope.launch {
-                    userPreferences.saveAuthToken(authViewModel.userToken.value.toString())
-                }
-            }
-            goToMainActivity()
-        })
+
+//        viewModel.signupStatus.observe(viewLifecycleOwner, { saveUserToken ->
+//            if(saveUserToken) {
+//                lifecycleScope.launch {
+//                    userPreferences.saveAuthToken(viewModel.userToken.value.toString())
+//                }
+//            }
+//            goToMainActivity()
+//        })
 
 
 
@@ -74,15 +71,7 @@ class SignUpFragment : Fragment() {
     }
     private fun goToMainActivity(){
         startActivity(Intent(context, MainActivity::class.java))
-        authViewModel.goToMainActivityComplete()
-    }
-
-    private fun goToSignUpReportFragment() {
-        Toast.makeText(context, "Inputted data has been processed", Toast.LENGTH_SHORT).show()
-        val action = SignUpFragmentDirections.actionSignUpFragmentToSignUpReportFragment()
-        NavHostFragment.findNavController(this).navigate(action)
-        // Set navigation trigger to false.
-        authViewModel.goToSignUpReportFragmentComplete()
+        viewModel.goToMainActivityComplete()
     }
 
 

@@ -21,28 +21,10 @@
         android:id="@+id/signUpFragment"
         android:name="com.ugogineering.android.mvvcdemo.auth.SignUpFragment"
         android:label="SignUpFragment"
-        tools:layout="@layout/fragment_sign_up" >
-        <action
-            android:id="@+id/action_signUpFragment_to_signUpReportFragment"
-            app:destination="@id/signUpReportFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/signUpReportFragment"
-        android:name="com.ugogineering.android.mvvcdemo.auth.SignUpReportFragment"
-        android:label="SignUpReportFragment"
-        tools:layout="@layout/fragment_sign_up_report" />
+        tools:layout="@layout/fragment_sign_up" />
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.ugogineering.android.mvvcdemo.auth.LoginFragment"
         android:label="LoginFragment"
-        tools:layout="@layout/fragment_login" >
-        <action
-            android:id="@+id/action_loginFragment_to_loginReportFragment"
-            app:destination="@id/loginReportFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/loginReportFragment"
-        android:name="com.ugogineering.android.mvvcdemo.auth.LoginReportFragment"
-        android:label="fragment_login_report"
-        tools:layout="@layout/fragment_login_report" />
+        tools:layout="@layout/fragment_login" />
 </navigation>
