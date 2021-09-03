@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="authViewModel"
-            type="com.ugogineering.android.mvvcdemo.auth.AuthViewModel" />
+            name="signUpViewModel"
+            type="com.ugogineering.android.mvvcdemo.auth.SignUpViewModel" />
     </data>
 
     <ScrollView
@@ -42,11 +42,26 @@
                 android:layout_marginTop="@dimen/vertical_margin"
                 android:layout_marginEnd="@dimen/horizontal_margin"
                 android:layout_marginBottom="@dimen/vertical_margin"
-                android:text="Sign Up"
-                android:textSize="30sp"
+                android:text="@{signUpViewModel.signupMessage}"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/questionImage"/>
+                app:layout_constraintTop_toBottomOf="@id/questionImage"
+                tools:text="Signup Message"/>
+            <TextView
+                android:id="@+id/signupStatus"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/horizontal_margin"
+                android:layout_marginTop="@dimen/vertical_margin"
+                android:layout_marginEnd="@dimen/horizontal_margin"
+                android:layout_marginBottom="@dimen/vertical_margin"
+                android:text="@{signUpViewModel.signupStatus.toString()}"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/signUpTitle"
+                tools:text="Signup Status"/>
 
             <EditText
                 android:id="@+id/firstName"
@@ -59,7 +74,7 @@
                 android:padding="@dimen/views_padding"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/signUpTitle" />
+                app:layout_constraintTop_toBottomOf="@id/signupStatus" />
 
             <EditText
                 android:id="@+id/lastName"

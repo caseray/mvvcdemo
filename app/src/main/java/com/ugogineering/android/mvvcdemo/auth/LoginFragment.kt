@@ -1,16 +1,17 @@
 package com.ugogineering.android.mvvcdemo.auth
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.NavHostFragment
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
+import com.ugogineering.android.mvvcdemo.MainActivity
 import com.ugogineering.android.mvvcdemo.R
+import com.ugogineering.android.mvvcdemo.data.model.LoginBody
 import com.ugogineering.android.mvvcdemo.databinding.FragmentLoginBinding
 
 
@@ -18,8 +19,11 @@ import com.ugogineering.android.mvvcdemo.databinding.FragmentLoginBinding
  * A simple [Fragment] subclass.
  */
 class LoginFragment : Fragment() {
+    //private lateinit var userPreferences: UserPreferences
     private lateinit var binding: FragmentLoginBinding
-    private val authViewModel: AuthViewModel by activityViewModels()
+    // Creating a reference to the LoginViewModel
+    private lateinit var viewModel: LoginViewModel
+    //private val authViewModel: AuthViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,37 +32,45 @@ class LoginFragment : Fragment() {
 
         binding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_login, container, false)
+        // Initializing the viewmodel object
+        viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
+        //userPreferences = UserPreferences(requireContext())
         // Setting the viewmodel for databinding - this allows the bound layout access to all the data in the ViewModel
-        binding.authViewModel = authViewModel
+        binding.loginViewModel = viewModel
         // Specifying the fragment view as the lifecycle owner of the binding. This is used so that the binding can observe LiveData updates
         binding.lifecycleOwner = viewLifecycleOwner
 
 
         binding.loginButton.setOnClickListener {
             if (validateData()) {
-                authViewModel.processLoginInput(binding.email.text.toString(),
-                binding.password.text.toString())
+                viewModel.login(
+                    LoginBody(binding.email.text.toString(),
+                    binding.password.text.toString()
+                    )
+                )
                 // Trigger navigation to LoginReportFragment
-                authViewModel.goToLoginReportFragment()
+                //authViewModel.goToLoginReportFragment()
             }
         }
 
-        // Observer for trigger to goToLoginFragment
-        authViewModel.eventGoToLoginFragment.observe(viewLifecycleOwner, { goToLoginReport ->
-            if(goToLoginReport) goToLoginReportFragment()
-        })
+        // Observer to save User Token
+//        viewModel.loginStatus.observe(viewLifecycleOwner, { saveUserToken ->
+//            if(saveUserToken) {
+//                lifecycleScope.launch {
+//                    userPreferences.saveAuthToken(viewModel.userToken.value.toString())
+//                }
+//            }
+//            goToMainActivityTwo()
+//        })
 
 
         return binding.root
     }
 
-    private fun goToLoginReportFragment() {
-        Toast.makeText(context, "Inputted data has been processed", Toast.LENGTH_SHORT).show()
-        val action = LoginFragmentDirections.actionLoginFragmentToLoginReportFragment()
-        NavHostFragment.findNavController(this).navigate(action)
-        // Set navigation trigger to false
-        authViewModel.goToLoginReportFragmentComplete()
+    private fun goToMainActivityTwo(){
+        startActivity(Intent(context, MainActivity::class.java))
+        viewModel.goToMainActivityCompleteTwo()
     }
 
     private fun validateData(): Boolean {

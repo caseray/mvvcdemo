@@ -3,68 +3,43 @@ package com.ugogineering.android.mvvcdemo.auth
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ugogineering.android.mvvcdemo.data.model.LoginBody
+import com.ugogineering.android.mvvcdemo.data.model.LoginResponse
+import com.ugogineering.android.mvvcdemo.data.model.SignupBody
+import com.ugogineering.android.mvvcdemo.data.model.SignupResponse
+import com.ugogineering.android.mvvcdemo.network.TestApi
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class AuthViewModel: ViewModel() {
-    private val _firstName = MutableLiveData<String>()
-    val firstName: LiveData<String>
-        get() = _firstName
 
-    private val _lastName = MutableLiveData<String>()
-    val lastName: LiveData<String>
-        get() = _lastName
 
-    private val _email = MutableLiveData<String>()
-    val email: LiveData<String>
-        get() = _email
 
-    private val _phone = MutableLiveData<String>()
-    val phone: LiveData<String>
-        get() = _phone
 
-    private val _password = MutableLiveData<String>()
-    val password: LiveData<String>
-        get() = _password
 
-    private val _passwordAgain = MutableLiveData<String>()
-    val passwordAgain: LiveData<String>
-        get() = _passwordAgain
+//    private val _eventGoToLoginFragment = MutableLiveData<Boolean>()
+//    val eventGoToLoginFragment: LiveData<Boolean>
+//        get() = _eventGoToLoginFragment
 
-    private val _eventGoToSignUpReportFragment = MutableLiveData<Boolean>()
-    val eventGoToSignUpReportFragment: LiveData<Boolean>
-        get() = _eventGoToSignUpReportFragment
 
-    private val _eventGoToLoginFragment = MutableLiveData<Boolean>()
-    val eventGoToLoginFragment: LiveData<Boolean>
-        get() = _eventGoToLoginFragment
 
-    init {
-        _eventGoToSignUpReportFragment.value = false
-        _eventGoToLoginFragment.value = false
-    }
 
-    fun processInput(firstName: String, lastName: String, email: String, phone: String, password: String ) {
-        _firstName.value = firstName
-        _lastName.value = lastName
-        _email.value = email
-        _phone.value = phone
-        _password.value = password
-    }
-    fun processLoginInput(email: String, password: String) {
-        _email.value = email
-        _password.value = password
-    }
 
-    fun goToSignUpReportFragment() {
-        _eventGoToSignUpReportFragment.value = true
-    }
-    fun goToSignUpReportFragmentComplete() {
-        _eventGoToSignUpReportFragment.value = false
-    }
-    fun goToLoginReportFragment() {
-        _eventGoToLoginFragment.value = true
-    }
-    fun goToLoginReportFragmentComplete() {
-        _eventGoToLoginFragment.value = false
-    }
+//    fun processInput(firstName: String, lastName: String, email: String, phone: String, password: String ) {
+//        _firstName.value = firstName
+//        _lastName.value = lastName
+//        _email.value = email
+//        _phone.value = phone
+//        _password.value = password
+//    }
+//    fun processLoginInput(email: String, password: String) {
+//        _email.value = email
+//        _password.value = password
+//    }
+
+
+
 
 }
