@@ -3,6 +3,8 @@ package com.ugogineering.android.mvvcdemo.auth
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ugogineering.android.mvvcdemo.data.model.LoginBody
+import com.ugogineering.android.mvvcdemo.data.model.LoginResponse
 import com.ugogineering.android.mvvcdemo.data.model.SignupBody
 import com.ugogineering.android.mvvcdemo.data.model.SignupResponse
 import com.ugogineering.android.mvvcdemo.network.TestApi
@@ -52,6 +54,19 @@ class AuthViewModel: ViewModel() {
     val signupMessage: LiveData<String>
         get() = _signupMessage
 
+    // Login Response
+    private val _loginResponse = MutableLiveData<LoginResponse>()
+    val loginResponse: LiveData<LoginResponse>
+        get() = _loginResponse
+    // Login Status
+    private val _loginStatus = MutableLiveData<Boolean>()
+    val loginStatus: LiveData<Boolean>
+        get() = _loginStatus
+    // Login Message
+    private val _loginMessage = MutableLiveData<String>()
+    val loginMessage: LiveData<String>
+        get() = _loginMessage
+
     // User Token
     private val _userToken = MutableLiveData<String>()
     val userToken: LiveData<String>
@@ -71,6 +86,8 @@ class AuthViewModel: ViewModel() {
         _eventGoToLoginFragment.value = false
         _signupMessage.value = "Default signup message"
         _signupStatus.value = false
+        _loginMessage.value = "Enter your details to login"
+        _loginStatus.value = false
     }
     // Adding a coroutine job
     private var viewModelJob = Job()
@@ -95,6 +112,21 @@ class AuthViewModel: ViewModel() {
                 _signupMessage.value = "Failure: ${e.message}"
                 // Trigger navigation to SignUpReportFragment
                // goToSignUpReportFragment()
+            }
+        }
+    }
+    // Sets the value of the loginResponse LiveData to the Login API login response
+    fun login(loginBody: LoginBody) {
+        coroutineScope.launch {
+            val loginDeferred = TestApi.retrofitService.login(loginBody)
+            try {
+                val loginResult = loginDeferred.await()
+                _loginMessage.value = "Success: ${loginResult.message}"
+                _loginResponse.value = loginResult
+                _userToken.value = loginResult.data.token
+                _loginStatus.value = loginResult.success
+            } catch (e: Exception) {
+                _loginMessage.value = "Failure: ${e.message}"
             }
         }
     }

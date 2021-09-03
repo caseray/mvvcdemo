@@ -4,6 +4,8 @@ import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterF
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.ugogineering.android.mvvcdemo.BuildConfig
+import com.ugogineering.android.mvvcdemo.data.model.LoginBody
+import com.ugogineering.android.mvvcdemo.data.model.LoginResponse
 import com.ugogineering.android.mvvcdemo.data.model.SignupBody
 import com.ugogineering.android.mvvcdemo.data.model.SignupResponse
 import kotlinx.coroutines.Deferred
@@ -45,6 +47,11 @@ interface TestApiService {
     @POST("api/auth/register")
     fun signUp(@Body signupBody: SignupBody):
             Deferred<SignupResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("api/auth/login")
+    fun login(@Body loginBody: LoginBody):
+            Deferred<LoginResponse>
 }
 
 object TestApi {

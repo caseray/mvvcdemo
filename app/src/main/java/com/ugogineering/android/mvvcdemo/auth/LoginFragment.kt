@@ -1,5 +1,6 @@
 package com.ugogineering.android.mvvcdemo.auth
 
+import UserPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.snackbar.Snackbar
 import com.ugogineering.android.mvvcdemo.R
+import com.ugogineering.android.mvvcdemo.data.model.LoginBody
 import com.ugogineering.android.mvvcdemo.databinding.FragmentLoginBinding
 
 
@@ -18,6 +20,7 @@ import com.ugogineering.android.mvvcdemo.databinding.FragmentLoginBinding
  * A simple [Fragment] subclass.
  */
 class LoginFragment : Fragment() {
+    private lateinit var userPreferences: UserPreferences
     private lateinit var binding: FragmentLoginBinding
     private val authViewModel: AuthViewModel by activityViewModels()
 
@@ -25,7 +28,7 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        userPreferences = UserPreferences(requireContext())
         binding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_login, container, false)
 
@@ -37,10 +40,13 @@ class LoginFragment : Fragment() {
 
         binding.loginButton.setOnClickListener {
             if (validateData()) {
-                authViewModel.processLoginInput(binding.email.text.toString(),
-                binding.password.text.toString())
+                authViewModel.login(
+                    LoginBody(binding.email.text.toString(),
+                    binding.password.text.toString()
+                    )
+                )
                 // Trigger navigation to LoginReportFragment
-                authViewModel.goToLoginReportFragment()
+                //authViewModel.goToLoginReportFragment()
             }
         }
 
@@ -48,6 +54,7 @@ class LoginFragment : Fragment() {
         authViewModel.eventGoToLoginFragment.observe(viewLifecycleOwner, { goToLoginReport ->
             if(goToLoginReport) goToLoginReportFragment()
         })
+        // Observer to save User Token
 
 
         return binding.root
